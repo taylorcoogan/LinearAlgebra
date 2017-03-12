@@ -1,0 +1,311 @@
+\documentclass{article}
+\usepackage{graphicx}
+\usepackage{systeme}
+\usepackage{gensymb}
+\usepackage{color}
+\usepackage{mathtools}
+\usepackage{amsmath}
+\makeatletter
+\renewcommand*\env@matrix[1][*\c@MaxMatrixCols c]{%
+  \hskip -\arraycolsep
+  \let\@ifnextchar\new@ifnextchar
+  \array{#1}}
+\makeatother
+
+\begin{document}
+
+\title{Math 215 Linear Algebra\break Project 1}
+\author{Taylor Coogan}
+
+\maketitle
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section*{Exercise 1}
+We have the following four equations, one for each satellite:
+
+\begin{equation}
+    \label{equation 1}
+    2x + 4y + 0z - 2(0.047)^{2}(19.9)t = 
+        1^{2} + 2^{2} + 0^{2} - 0.047^{2}(19.9)^{2} + x^{2} + y^{2} + z^{2} - 0.047^{2}t^{2}  \tag{E1}
+\end{equation}
+
+\begin{equation}
+    \label{equation 2}
+    4x + 0y + 4z - 2(0.047)^{2}(2.40)t = 
+        2^{2} + 0^{2} + 2^{2} - 0.047^{2}(2.40)^{2} + x^{2} + y^{2} + z^{2} - 0.047^{2}t^{2} \tag{E2}
+\end{equation}
+
+\begin{equation}
+    \label{equation 3}
+    2x + 2y + 2z - 2(0.047)^{2}(32.6)t = 
+        1^{2} + 1^{2} + 1^{2} - 0.047^{2}(32.6)^{2} + x^{2} + y^{2} + z^{2} - 0.047^{2}t^{2}  \tag{E3}
+\end{equation}
+
+\begin{equation}
+    \label{equation 4}
+    4x + 2y + 0z - 2(0.047)^{2}(19.9)t = 
+        2^{2} + 1^{2} + 0^{2} - 0.047^{2}(19.9)^{2} + x^{2} + y^{2} + z^{2} - 0.047^{2}t^{2}  \tag{E4}
+\end{equation}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section*{Exercise 2}
+We can see there is a quadratic term that appears on the right hand side of all the equations.  We can subtract Equation (E1) from each equation to eliminate that quadratic term.  
+
+\begin{equation*}
+    \label{description}
+    \textnormal{(L1) = (E2) - (E1), (L2) = (E3) - (E1), 
+and (L3) = (E4) - (E1)} 
+\end{equation*}
+
+\begin{equation}
+    \label{equation 5}
+    2x - 4y + 4z + (0.077315)t = 3.86206225   \tag{L1}
+\end{equation}
+
+\begin{equation}
+    \label{equation 6}
+    0x - 2y + 2z - (0.056109)t = -3.47285075  \tag{L2}
+\end{equation}
+
+\begin{equation}
+    \label{equation 7}
+    2x - 2y + 0z + 0t = 0 \tag{L3}
+\end{equation}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\section*{Exercise 3}
+Now we can represent equations L1, L2, and L3 as an augmented matrix.
+
+$$ \begin{bmatrix}[cccc|c]
+  2 & -4 & 4 & 0.077315 & 3.86206225\\
+  0 & -2 & 2 & -0.056109 & -3.47285075\\
+  2 & -2 & 0 & 0 & 0
+\end{bmatrix} $$
+
+\noindent Then we can use Octave to solve.
+\newline \break
+\textnormal{\indent \color{blue} octave:1\textgreater A = [2, -4, 4, 0.077315, 3.86206225; 0, -2, 2, -0.056109, -3.47285075; \indent \indent \indent \indent \indent \ \ 2, -2, 0, 0, 0]}
+\newline
+\textnormal{ \indent \color{blue} octave:2\textgreater rref(A) }
+\newline \break
+\textnormal{We get the resulting matrix in reduced echelon form.}
+
+$$ \begin{bmatrix}[cccc|c]
+  1 & 0 & 0 & 0.09477 & 5.40388\\
+  0 & 1 & 0 & 0.09477 & 5.40388\\
+  0 & 0 & 1 & 0.06671 & 3.66746
+\end{bmatrix} $$
+
+
+\noindent \textnormal{We can see that x, y, and z are basic variables, while t is a free variable.  
+\newline \newline We get the following solution:}
+
+\[
+\systeme*{  x = 5.40388 - 0.09477t, 
+            y = 5.40388 - 0.09477t, 
+            z = 3.66746 - 0.06671t, 
+            t = t}
+\]
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section*{Exercise 4}
+
+The next step is to plug our variables x, y, z into the equation (E1) to solve for t.  This should give us a quadratic in terms of t which we can use to find the location of our GPS receiver.  
+
+%%\begin{equation}
+   %% \label{E1 plugged in}   
+     \begin{align*}
+    2(5.40388 - 0.09477t) + 4(5.40388 - 0.09477t) \\ + \ 0(3.66746 - 0.06671t) - 0.087918t = \\  
+    1^{2} + 2^{2} + 0^{2} - 0.047^{2}(19.9)^{2} + (5.40388 - 0.09477t)^{2} + \\ (5.40388 - 0.09477t)^{2} + (3.66746 - 0.06671t)^{2} - 0.047^{2}t^{2}  
+\end{align*} 
+%%\end{equation}
+
+We can begin simplifying this equation:
+
+%%\begin{equation}
+  %%  \label{E1 plugged in simplifying}   
+     \begin{align*}
+    10.8078 - 0.18954t + 21.6155 - 0.37908t - 0.087918t = \\
+        5 - 0.87478609 
+        + 0.00898135t^{2} - 1.02425t + 29.2019 \\
+        + 0.00898135t^{2} - 1.02425t + 29.2019  \\
+        + 0.00445022t^{2} - 0.489313t + 13.4503 
+        - 0.002209 t^{2}
+\end{align*} 
+%%\end{equation}
+
+And we can simplify further:
+
+  \begin{equation*}
+    32.4233 - 0.656538t = 0.0202039t^2 - 2.53781t + 75.9793
+\end{equation*} 
+
+This gives us the following quadratic equation:
+
+  \begin{equation*}
+    0.0202039t^2 -1.88127 t + 43.556 = 0
+\end{equation*} 
+
+We solve this to get the roots:
+
+  \begin{equation*}
+    (t = 43.1304), (t = 49.9838)
+\end{equation*} 
+
+\noindent To see which time value is correct, we can plug each one into the x, y, z definitions and see if the x,y,z values work in the following equation that we know is true for any point on earth at sea level:
+
+\begin{equation*}
+    x^{2} + y^{2} + z^{2} = 1
+\end{equation*} 
+
+Let's start with t = 43.1304.
+
+\[
+\systeme*{  x = 5.40388 - 0.09477(43.1304) = 1.316468854, 
+            y = 5.40388 - 0.09477(43.1304) = 1.316468854, 
+            z = 3.66746 - 0.06671(43.1304) = 0.790231016, 
+            t = 43.1304}
+\]
+
+\begin{equation*}
+    1.316468854^{2} + 1.316468854^{2} + 0.790231016^{2} = 4.0906 \neq 1
+\end{equation*} 
+
+We can see that t = 43.1304 is not the correct time value. \\ \\
+\indent Now let's try t = 49.9838
+
+\[
+\systeme*{  x = 5.40388 - 0.09477(49.9838) = 0.666915274, 
+            y = 5.40388 - 0.09477(49.9838) = 0.666915274, 
+            z = 3.66746 - 0.06671(49.9838) = 0.333040702, 
+            t = 49.9838}
+\]
+
+\begin{equation*}
+    0.666915274^{2} + 0.666915274^{2} + 0.333040702^{2} = 1.000
+\end{equation*} 
+
+It looks like this time value is correct!  Hooray! \\ \\ \\
+So the location of our GPS receiver in x,y,z coordinates is:
+
+\begin{equation*}
+    (x,y,z) = (0.666915274, 0.666915274, 0.333040702)
+\end{equation*} 
+Or in fractional form:
+\begin{equation*}
+    (x,y,z) = (\frac{2}{3} , \frac{2}{3} , \frac{1}{3})
+\end{equation*} 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section*{Exercise 5}
+
+For this section we want to convert our x,y,z coordinates to meters (using the fact that the radius of earth is 6,377,563.396 meters).  Then we want to convert into latitude and longitude coordinates.
+\vspace{5mm}
+
+\noindent Our x,y,z values in meters:
+\begin{equation*}
+    x_{meters} = x * 6,377,563.396 = 0.666915274 * 6,377,563.396 = {4,253,294.4396}
+\end{equation*} 
+\begin{equation*}
+    y_{meters} = y * 6,377,563.396 = 0.666915274 * 6,377,563.396 = {4,253,294.4396}
+\end{equation*} 
+\begin{equation*}
+    z_{meters} = y * 6,377,563.396 = 0.333040702 * 6,377,563.396 = {2,123,988.1904}
+\end{equation*} 
+
+\vspace{5mm}
+\noindent Now let's use the longitude equation to calculate longitude.
+\begin{equation*}
+    \lambda = \arctan(\frac{x}{y}) = \arctan(\frac{4,253,294.4396}{4,253,294.4396}) = \frac{\pi}{4} = 45\degree
+\end{equation*} 
+
+\vspace{5mm}
+\noindent Next we need to calculate latitude, which will be more complicated.  For our calculations we
+will use the Airy 1830 ellipsoidal to represent the Earth, this gives a = 6,377,563.396m and
+b = 6,356,256.910m.  We also know the following:
+
+\begin{align*}
+    p & = \sqrt{x^{2} + y^{2}} = 6,015,066.6812 \\  e & = \frac{a^{2} - b^{2}}{a^{2}} = 0.0066705 
+\end{align*} 
+
+\noindent We begin by calculating initial values.
+
+\begin{align*}
+    \phi_0  = \arctan(\frac{z}{p(1-e)})  = \arctan(\frac{2,123,988.1904}{5,974,943.1789}) = 19.57\degree
+\end{align*} 
+
+\begin{align*}
+    v_0 & = \frac{a}{\sqrt{1 - e\sin^{2}(\phi_0)}} = \frac{6,377,563.396}{\sqrt{1 - (0.0066705)\sin^{2}(19.57\degree)}} \\ & = \frac{6,377,563.396}{0.9985473)} = 6,386,841.5607
+\end{align*} 
+
+\noindent Now we can use Octave to solve the following iterative equations for our latitude coordinate:
+
+\begin{align*}
+    \phi_i = \arctan(\frac{z + e v_{i-1}\sin(\phi_{i-1})}{p}) \ \ \ i = 1, 2, 3,...
+\end{align*}
+
+\begin{align*}
+    v_i = \frac{a}{\sqrt{1 - e\sin^{2}(\phi_i)}} \ \ \ i = 1, 2, 3,...
+\end{align*}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\vspace{5mm}
+First Iteration: \newline \break  
+\textnormal{\color{blue} \small octave:1\textgreater \ $atan$(((2123988.1904) - (0.0066705)*(6386841.5607)*sin(19.57)) / (6015066.6812)) \normalsize}
+\begin{align*}
+    \phi_1 = \arctan(\frac{z + e v_{0}\sin(\phi_{0})}{p}) = \arctan(\frac{z + e (6,386,841.5607)\sin(19.57\degree)}{p}) = 0.33528
+\end{align*} \\ 
+\textnormal{$\color{blue} \small octave:2\textgreater \ (6,377,563.396) / (sqrt(1 - (0.0066705)*(sin(0.33528)^2)))$ \normalsize}
+
+\begin{align*}
+    v_1 = \frac{a}{\sqrt{1 - e\sin^{2}(\phi_1)}} = \frac{a}{\sqrt{1 - e\sin^{2}(0.33528 )}} = 6,379,867.48
+\end{align*}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\vspace{5mm}
+Second Iteration: \newline \break  
+\textnormal{\color{blue} \small octave:3\textgreater \ $atan$(((2123988.1904) - (0.0066705)*(6379867.48)*sin(0.33528)) / (6015066.6812)) \normalsize}
+\begin{align*}
+    \phi_2 = \arctan(\frac{z + e v_{1}\sin(\phi_{1})}{p}) = \arctan(\frac{z + e(6379867.48)\sin(0.33528)}{p}) =  0.33737
+\end{align*} \\
+\textnormal{$\color{blue} \small octave:4\textgreater \ (6377563.396) / (sqrt(1 - (0.0066705)*(sin(0.33737)^2)))$ \normalsize}
+
+\begin{align*}
+    v_2 = \frac{a}{\sqrt{1 - e\sin^{2}(\phi_2)}} = \frac{a}{\sqrt{1 - e\sin^{2}(0.33737)}} = 6,379,895.21
+\end{align*}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\vspace{5mm}
+Third Iteration: \newline \break  
+\textnormal{\color{blue} \small octave:5\textgreater \ $atan$(((2123988.1904) - (0.0066705)*(6379895.21)*sin(0.33737)) / (6015066.6812)) \normalsize}
+\begin{align*}
+    \phi_3 = \arctan(\frac{z + e v_{2}\sin(\phi_{2})}{p}) = \arctan(\frac{z + e(6,379,895.21)\sin(0.33737)}{p}) = 0.33736
+\end{align*} 
+\textnormal{$\color{blue} \small octave:6\textgreater \ (6377563.396) / (sqrt(1 - (0.0066705)*(sin(0.33736)^2)))$ \normalsize}
+
+\begin{align*}
+    v_3 = \frac{a}{\sqrt{1 - e\sin^{2}(\phi_3)}} = \frac{a}{\sqrt{1 - e\sin^{2}(0.33736)}} = 6,379,895.08
+\end{align*}
+
+\vspace{5mm}
+\noindent We convert $\phi_{3}$ to degrees:
+\begin{align*}
+            \phi_3 & = 0.33736 \ \textnormal{rad} \ = 19.3293\degree
+\end{align*}
+
+\vspace{5mm}
+\noindent Now we have our final answer, the location of our GPS receiver in latitude and longitude coordinates:
+
+\[
+ \boxed{\begin{align*}
+    \phi & = 19.3293\degree \ latitude \\
+            \lambda & = 45\degree \ longitude \end{align*}}
+ \]
+
+\end{document}
